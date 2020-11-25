@@ -1,0 +1,399 @@
+databaseChangeLog:
+- changeSet:
+      id: 01
+      author: Nguyen Dao Ngoc Anh
+      changes:
+      - createTable:
+            tableName: service
+            columns:
+            - column:
+                  name: id
+                  type: int(11)
+                  autoIncrement: true
+                  constraints:
+                      primaryKey: true
+                      nullable: false
+            - column:
+                  name: location
+                  type: varchar(256)
+            - column:
+                  name: name
+                  type: varchar(256)
+            - column:
+                  name: is_deleted
+                  type: boolean
+            - column:
+                  name: created_timestamp
+                  type: timestamp(6)
+            - column:
+                  name: last_updated_timestamp
+                  type: timestamp(6)
+      - addDefaultValue:
+            columnName: is_deleted
+            defaultValueBoolean: false
+            tableName: service
+      - addDefaultValue:
+            columnName: created_timestamp
+            defaultValueComputed: CURRENT_TIMESTAMP(6)
+            tableName: service
+      - addDefaultValue:
+            columnName: last_updated_timestamp
+            defaultValueComputed: CURRENT_TIMESTAMP(6)
+            tableName: service
+      - createTable:
+            tableName: api
+            columns:
+            - column:
+                  name: id
+                  type: int(11)
+                  autoIncrement: true
+                  constraints:
+                      primaryKey: true
+                      nullable: false
+            - column:
+                  name: name
+                  type: varchar(256)
+            - column:
+                  name: http_method
+                  type: varchar(256)
+            - column:
+                  name: pattern
+                  type: varchar(256)
+            - column:
+                  name: is_required_access_token
+                  type: boolean
+            - column:
+                  name: prefix
+                  type: varchar(256)
+            - column:
+                  name: service_id
+                  type: int(11)
+            - column:
+                  name: is_deleted
+                  type: boolean
+            - column:
+                  name: created_timestamp
+                  type: timestamp(6)
+            - column:
+                  name: last_updated_timestamp
+                  type: timestamp(6)
+      - addDefaultValue:
+            columnName: is_deleted
+            defaultValueBoolean: false
+            tableName: api
+      - addDefaultValue:
+            columnName: created_timestamp
+            defaultValueComputed: CURRENT_TIMESTAMP(6)
+            tableName: api
+      - addDefaultValue:
+            columnName: last_updated_timestamp
+            defaultValueComputed: CURRENT_TIMESTAMP(6)
+            tableName: api
+      - createTable:
+            tableName: oauth_client_details
+            columns:
+            - column:
+                  name: client_id
+                  type: varchar(256)
+                  constraints:
+                      primaryKey: true
+                      nullable: false
+            - column:
+                  name: client_secret
+                  type: varchar(256)
+            - column:
+                  name: client_name
+                  type: varchar(256)
+            - column:
+                  name: authorized_grant_types
+                  type: varchar(256)
+            - column:
+                  name: access_token_validity
+                  type: int(11)
+            - column:
+                  name: refresh_token_validity
+                  type: int(11)
+            - column:
+                  name: is_deleted
+                  type: boolean
+            - column:
+                  name: created_timestamp
+                  type: timestamp(6)
+            - column:
+                  name: last_updated_timestamp
+                  type: timestamp(6)
+      - addDefaultValue:
+            columnName: is_deleted
+            defaultValueBoolean: false
+            tableName: oauth_client_details
+      - addDefaultValue:
+            columnName: created_timestamp
+            defaultValueComputed: CURRENT_TIMESTAMP(6)
+            tableName: oauth_client_details
+      - addDefaultValue:
+            columnName: last_updated_timestamp
+            defaultValueComputed: CURRENT_TIMESTAMP(6)
+            tableName: oauth_client_details
+      - createTable:
+            tableName: client_scope
+            columns:
+            - column:
+                  name: client_id
+                  type: varchar(256)
+                  constraints:
+                      primaryKey: true
+                      nullable: false
+            - column:
+                  name: api_id
+                  type: int(11)
+                  constraints:
+                      primaryKey: true
+                      nullable: false
+      - createTable:
+            tableName: oauth_access_token
+            columns:
+            - column:
+                  name: id
+                  type: int(11)
+                  autoIncrement: true
+                  constraints:
+                      primaryKey: true
+                      nullable: false
+            - column:
+                  name: token_value
+                  type: varchar(256)
+            - column:
+                  name: client_id
+                  type: varchar(256)
+            - column:
+                  name: scope
+                  type: varchar(256)
+            - column:
+                  name: user_id
+                  type: int(11)
+            - column:
+                  name: user_type_id
+                  type: int(11)
+            - column:
+                  name: refresh_token
+                  type: varchar(256)
+            - column:
+                  name: authorized_grant_types
+                  type: varchar(256)
+            - column:
+                  name: created_timestamp
+                  type: timestamp(6)
+      - addDefaultValue:
+            columnName: created_timestamp
+            defaultValueComputed: CURRENT_TIMESTAMP(6)
+            tableName: oauth_access_token
+- changeSet:
+      id: 02
+      author: Nguyen Dao Ngoc Anh
+      context: "dev"
+      changes:
+      - insert:
+            tableName: service
+            columns:
+            - column:
+               name: id
+               value: 1
+            - column:
+               name: location
+               value: "http://localhost:8092"
+            - column:
+               name: "name"
+               value: "user"
+      - insert:
+            tableName: service
+            columns:
+            - column:
+               name: id
+               value: 2
+            - column:
+               name: location
+               value: "forward:/"
+            - column:
+               name: "name"
+               value: "api-gateway"
+- changeSet:
+    id: 03
+    author: Nguyen Dao Ngoc Anh
+    context: "container"
+    changes:
+      - insert:
+          tableName: service
+          columns:
+            - column:
+                name: id
+                value: 1
+            - column:
+                name: location
+                value: "http://user-profile:8092"
+            - column:
+                name: "name"
+                value: "user"
+      - insert:
+          tableName: service
+          columns:
+            - column:
+                name: id
+                value: 2
+            - column:
+                name: location
+                value: "forward:/"
+            - column:
+                name: "name"
+                value: "api-gateway"
+- changeSet:
+    id: 04
+    author: Nguyen Dao Ngoc Anh
+    changes:
+      - insert:
+          tableName: api
+          columns:
+            - column:
+                name: id
+                value: 1
+            - column:
+                name: name
+                value: "user registration"
+            - column:
+                name: http_method
+                value: "POST"
+            - column:
+                name: pattern
+                value: "/user/v1.0/users"
+            - column:
+                name: is_required_access_token
+                value: 0
+            - column:
+                name: service_id
+                value: 1
+      - insert:
+          tableName: api
+          columns:
+            - column:
+                name: id
+                value: 2
+            - column:
+                name: name
+                value: "user login"
+            - column:
+                name: http_method
+                value: "POST"
+            - column:
+                name: pattern
+                value: "/v1.0/user/oauth/token"
+            - column:
+                name: is_required_access_token
+                value: 0
+            - column:
+                name: service_id
+                value: 2
+      - insert:
+          tableName: api
+          columns:
+            - column:
+                name: id
+                value: 3
+            - column:
+                name: name
+                value: "user get list of shared videos"
+            - column:
+                name: http_method
+                value: "GET"
+            - column:
+                name: pattern
+                value: "/user/v1.0/videos"
+            - column:
+                name: is_required_access_token
+                value: 0
+            - column:
+                name: service_id
+                value: 1
+      - insert:
+          tableName: api
+          columns:
+            - column:
+                name: id
+                value: 4
+            - column:
+                name: name
+                value: "user share a video"
+            - column:
+                name: http_method
+                value: "POST"
+            - column:
+                name: pattern
+                value: "/user/v1.0/videos"
+            - column:
+                name: is_required_access_token
+                value: 1
+            - column:
+                name: service_id
+                value: 1
+      - insert:
+          tableName: oauth_client_details
+          columns:
+            - column:
+                name: client_id
+                value: "test_client_id"
+            - column:
+                name: client_secret
+                value: "test_client_secret"
+            - column:
+                name: authorized_grant_types
+                value: "password"
+            - column:
+                name: access_token_validity
+                value: 3600
+            - column:
+                name: refresh_token_validity
+                value: 3600
+      - insert:
+          tableName: client_scope
+          columns:
+            - column:
+                name: client_id
+                value: "test_client_id"
+            - column:
+                name: api_id
+                value: 1
+      - insert:
+          tableName: client_scope
+          columns:
+            - column:
+                name: client_id
+                value: "test_client_id"
+            - column:
+                name: api_id
+                value: 2
+      - insert:
+          tableName: client_scope
+          columns:
+            - column:
+                name: client_id
+                value: "test_client_id"
+            - column:
+                name: api_id
+                value: 3
+      - insert:
+          tableName: client_scope
+          columns:
+            - column:
+                name: client_id
+                value: "test_client_id"
+            - column:
+                name: api_id
+                value: 4
+- changeSet:
+    id: 05
+    author: Nguyen Dao Ngoc Anh
+    changes:
+      - addColumn :
+          tableName: oauth_access_token
+          columns:
+            - column:
+                name: username
+                type: varchar(256)
